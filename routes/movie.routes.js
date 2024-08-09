@@ -168,7 +168,7 @@ movieRouter.get("/sortByRating",authenticate, async (req, res) => {
     // destructuring the req.body data
     let {sortOrder} = req.query;
 
-    // Build sort object for rating
+    // Build sort object for rating 
     let sort = {};
     // checking the sortOrder and assigning the values accordingly
     if(sortOrder === "asc") {

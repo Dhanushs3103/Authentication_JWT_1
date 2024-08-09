@@ -19,7 +19,7 @@ authRouter.post("/register", async (req,res)=>{
         bcrypt.hash(password, 5, async function(err, hash) {
             try {
                 if(err) {
-                    res.status(500).send("Something was while hashing the password")
+                    res.status(500).send("Something went wrong while hashing the password")
                 }
                 //adding user to DB with hashed password
                 let newUser = new RegisterModel({
@@ -47,7 +47,7 @@ authRouter.post("/register", async (req,res)=>{
 authRouter.post("/login", async (req, res) => {
     try {
         // Destructuring the data from req.body
-        let { password, email, userName } = req.body;
+        let { password, email} = req.body;
         // Finding whether the user with email is present or not
         let user = await RegisterModel.findOne({ email });
         
@@ -64,12 +64,12 @@ authRouter.post("/login", async (req, res) => {
 
             if (result) {
                 // Creating a token with the role and userName from the user object
-                jwt.sign({ role: user.role,userName }, JWT_SECRET_KEY, function (err, token) {
+                jwt.sign({ role: user.role,userName:user.userName }, JWT_SECRET_KEY, function (err, token) {
                     if (err) {
                         return res.status(500).send(err);
                     }
                     res.header({
-                        authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`
                     }).send("Login successful");
                 });
             } else {
@@ -79,7 +79,7 @@ authRouter.post("/login", async (req, res) => {
         });
     } catch (error) {
         console.log(error);
-        res.status(500).send("Internal Server Error");
+        res.status(500).send(err);
     }
 });
 
