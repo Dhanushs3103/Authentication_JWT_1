@@ -3,12 +3,13 @@ let express = require("express");
 
 //local imports
 let MovieModel = require("../models/movie.model.js");
+let authenticate = require("../middleware/auth.middleware.js")
 
 //parent router
 let movieRouter = express.Router();
 
 // Route for adding movie-data
-movieRouter.post("/add-movie", async (req, res) => {
+movieRouter.post("/add-movie",authenticate, async (req, res) => {
   try {
     // destructuring the req.body data
     let { title, director, rating, category, language } = req.body;
@@ -31,7 +32,7 @@ movieRouter.post("/add-movie", async (req, res) => {
 });
 
 // Route for updating the movie data(PUT request)
-movieRouter.put("/update-movie/:movieId", async (req, res) => {
+movieRouter.put("/update-movie/:movieId",authenticate, async (req, res) => {
   try {
     // destructuring the req.body data
     let { title, director, rating, category, language } = req.body;
@@ -50,7 +51,7 @@ movieRouter.put("/update-movie/:movieId", async (req, res) => {
 });
 
 // Route for updating the movie data(patch request)
-movieRouter.patch("/update-movie/:movieId", async (req, res) => {
+movieRouter.patch("/update-movie/:movieId",authenticate, async (req, res) => {
   try {
     let id = req.params.movieId;
     // updating movie with new data
@@ -64,7 +65,7 @@ movieRouter.patch("/update-movie/:movieId", async (req, res) => {
 });
 
 // Route for delete the movie data
-movieRouter.delete("/delete-movie/:movieId", async (req, res) => {
+movieRouter.delete("/delete-movie/:movieId",authenticate, async (req, res) => {
   try {
     let id = req.params.movieId;
     // updating movie with new data
@@ -78,7 +79,7 @@ movieRouter.delete("/delete-movie/:movieId", async (req, res) => {
 });
 
 // Route for getting data based on search by title
-movieRouter.get("/searchByTitle", async (req, res) => {
+movieRouter.get("/searchByTitle",authenticate, async (req, res) => {
   try {
     // destructuring the req.body data
     let { title } = req.query;
@@ -102,7 +103,7 @@ movieRouter.get("/searchByTitle", async (req, res) => {
 });
 
 // Route for getting data based on filter by category,language,director
-movieRouter.get("/filterBy", async (req, res) => {
+movieRouter.get("/filterBy",authenticate, async (req, res) => {
   try {
     // destructuring the req.body data
     let { category, language, director } = req.query;
@@ -131,7 +132,7 @@ movieRouter.get("/filterBy", async (req, res) => {
   }
 });
 
-movieRouter.get("/", async (req, res) => {
+movieRouter.get("/",authenticate, async (req, res) => {
   try {
     // destructuring the req.body data
     let { page = 1, limit = 10 } = req.query;
@@ -162,7 +163,7 @@ movieRouter.get("/", async (req, res) => {
   }
 });
 
-movieRouter.get("/sortByRating", async (req, res) => {
+movieRouter.get("/sortByRating",authenticate, async (req, res) => {
   try {
     // destructuring the req.body data
     let {sortOrder} = req.query;
